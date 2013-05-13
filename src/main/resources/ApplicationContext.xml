@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<beans xmlns="http://www.springframework.org/schema/beans"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+<!-- Bean declarations go here -->
+	<!--bean id="Protocol" class="tsmAnalyser.DiaErrorProcessor" /-->
+	<bean id="Protocol" class="com.nsn.tsmanalyser.MapErrorProcessor" />
+	
+	<bean id="Outputter" class="com.nsn.tsmanalyser.HTMLoutputter" />
+	<!--  bean id="Outputter" class="tsmAnalyser.TEXTOutputter" /-->
+        
+        <bean id="XMLProcessor" class="com.nsn.tsmanalyser.TSMProcessor" />
+</beans>
