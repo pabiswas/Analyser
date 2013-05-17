@@ -40,150 +40,138 @@ import org.jCharts.types.ChartType;
  */
 public class utils {
 
-	public static String getTitle(String text)
-	{
-		Pattern incomingMsg = Pattern.compile("(Title)(.*)\n");
-		Matcher m = incomingMsg.matcher(text);
+    public static String getTitle(String text) {
+        Pattern incomingMsg = Pattern.compile("(Title)(.*)\n");
+        Matcher m = incomingMsg.matcher(text);
 
-		if(m.find())
-		{
-			return m.group();
-		}
-		else
-			return "";
-	}
+        if (m.find()) {
+            return m.group();
+        } else {
+            return "";
+        }
+    }
 
-	public static String findPattern(String pattern, String line)
-	{
-		// TODO Auto-generated method stub
-		Pattern msgPattern = Pattern.compile(pattern);
-		Matcher m = msgPattern.matcher(line);
-		if(m.find())
-		{
-			line = m.group();
-			return line;
-		}
-		return null;
-	}
+    public static String findPattern(String pattern, String line) {
+        // TODO Auto-generated method stub
+        Pattern msgPattern = Pattern.compile(pattern);
+        Matcher m = msgPattern.matcher(line);
+        if (m.find()) {
+            line = m.group();
+            return line;
+        }
+        return null;
+    }
 
-	public static void generateCharts(HashMap<String, Integer> hmap) throws Throwable {
-		// TODO Auto-generated method stub
-		basicChart(hmap);
-	}
+    public static void generateCharts(HashMap<String, Integer> hmap) throws Throwable {
+        // TODO Auto-generated method stub
+        basicChart(hmap);
+    }
 
-	private static void basicChart(HashMap<String, Integer> hmap) throws Throwable
-	{
-		PieChart2DProperties pieChart2DProperties= new PieChart2DProperties();
-		outputChart( pieChart2DProperties, hmap, "pieChartBasic" );
-	}
+    private static void basicChart(HashMap<String, Integer> hmap) throws Throwable {
+        PieChart2DProperties pieChart2DProperties = new PieChart2DProperties();
+        outputChart(pieChart2DProperties, hmap, "pieChartBasic");
+    }
 
-	private static void outputChart( PieChart2DProperties pieChart2DProperties, HashMap<String, Integer> hmap, String name ) throws Throwable
-	{
-		Set<Map.Entry<String, Integer> > set = hmap.entrySet();
-		Iterator<Entry<String, Integer> > it = set.iterator();
+    private static void outputChart(PieChart2DProperties pieChart2DProperties, HashMap<String, Integer> hmap, String name) throws Throwable {
+        Set<Map.Entry<String, Integer>> set = hmap.entrySet();
+        Iterator<Entry<String, Integer>> it = set.iterator();
 
 //		System.out.println("Size of hmap : " + set.size());
 
-		Random numgen = new Random();
+        Random numgen = new Random();
 
-		String[] errorLabel = new String[set.size()];
-		double[] errorData  = new double[set.size()];
-		Paint[]  colorValue = new Paint[set.size()];
-		double[][] barData  = new double[1][set.size()];
-		int i = 0;
+        String[] errorLabel = new String[set.size()];
+        double[] errorData = new double[set.size()];
+        Paint[] colorValue = new Paint[set.size()];
+        double[][] barData = new double[1][set.size()];
+        int i = 0;
 
-		while(it.hasNext())
-		{
-			Map.Entry me = (Map.Entry)it.next();
+        while (it.hasNext()) {
+            Map.Entry me = (Map.Entry) it.next();
 
-			errorLabel[i] = (String) me.getKey();
-			errorData[i]  = (Integer) me.getValue();
-			colorValue[i] = new Color(numgen.nextInt(256), numgen.nextInt(256), numgen.nextInt(256));
-			barData[0][i] = (Integer) me.getValue();
-			i++;
-		}
+            errorLabel[i] = (String) me.getKey();
+            errorData[i] = (Integer) me.getValue();
+            colorValue[i] = new Color(numgen.nextInt(256), numgen.nextInt(256), numgen.nextInt(256));
+            barData[0][i] = (Integer) me.getValue();
+            i++;
+        }
 
-		//--- Pie Chart ---//
+        //--- Pie Chart ---//
 //		PieChartDataSet pieChartDataSet= new PieChartDataSet( "Errors", errorData, errorLabel, colorValue, pieChart2DProperties );
 //
 //		PieChart2D pieChart2D= new PieChart2D( pieChartDataSet, new LegendProperties(), new ChartProperties(), 500, 350 );
 //		exportImage( pieChart2D, name );
 
-		//--- Bar Chart --//
-		String xAxisTitle= "Protocol Errors";
-		String yAxisTitle= "Count";
-		String title= "Protocol Error count";
-		DataSeries dataSeries = new DataSeries( errorLabel, xAxisTitle, yAxisTitle, title );
+        //--- Bar Chart --//
+        String xAxisTitle = "Protocol Errors";
+        String yAxisTitle = "Count";
+        String title = "Protocol Error count";
+        DataSeries dataSeries = new DataSeries(errorLabel, xAxisTitle, yAxisTitle, title);
 
-		String[] legendLabels= { "Errors" };
-		Paint[] paints= new Paint[]{ Color.blue.darker() };
-		BarChartProperties barChartProperties= new BarChartProperties();
-		AxisChartDataSet axisChartDataSet= new AxisChartDataSet( barData, legendLabels, paints, ChartType.BAR, barChartProperties );
-		dataSeries.addIAxisPlotDataSet( axisChartDataSet );
+        String[] legendLabels = {"Errors"};
+        Paint[] paints = new Paint[]{Color.blue.darker()};
+        BarChartProperties barChartProperties = new BarChartProperties();
+        AxisChartDataSet axisChartDataSet = new AxisChartDataSet(barData, legendLabels, paints, ChartType.BAR, barChartProperties);
+        dataSeries.addIAxisPlotDataSet(axisChartDataSet);
 
-		ChartProperties chartProperties= new ChartProperties();
-		AxisProperties axisProperties= new AxisProperties();
-		LegendProperties legendProperties= new LegendProperties();
-		AxisChart axisChart= new AxisChart( dataSeries, chartProperties, axisProperties, legendProperties, 1000, 300 );
+        ChartProperties chartProperties = new ChartProperties();
+        AxisProperties axisProperties = new AxisProperties();
+        LegendProperties legendProperties = new LegendProperties();
+        AxisChart axisChart = new AxisChart(dataSeries, chartProperties, axisProperties, legendProperties, 1000, 300);
 
-		exportImage( axisChart, "barChart" );
-	}
+        exportImage(axisChart, "barChart");
+    }
 
-	static void exportImage( Chart chart, String fileName )
-	{
-	   String extension= ".png";
-		FileOutputStream fileOutputStream;
+    static void exportImage(Chart chart, String fileName) {
+        String extension = ".png";
+        FileOutputStream fileOutputStream;
 
-		try
-		{
-			fileOutputStream= new FileOutputStream( fileName + extension );
-			PNGEncoder.encode( chart, fileOutputStream );
-			fileOutputStream.flush();
-			fileOutputStream.close();
-		}
-		catch( Throwable throwable )
-		{
-			throwable.printStackTrace();
-		}
-	}
+        try {
+            fileOutputStream = new FileOutputStream(fileName + extension);
+            PNGEncoder.encode(chart, fileOutputStream);
+            fileOutputStream.flush();
+            fileOutputStream.close();
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        }
+    }
 
-	public static void generatePieChart(HashMap<String, Integer> statisticsMap) throws Throwable {
-		// TODO Auto-generated method stub
-		PieChart2DProperties pieChart2DProperties= new PieChart2DProperties();
-		Set<Map.Entry<String, Integer> > set = statisticsMap.entrySet();
-		Iterator<Entry<String, Integer> > it = set.iterator();
+    public static void generatePieChart(HashMap<String, Integer> statisticsMap) throws Throwable {
+        PieChart2DProperties pieChart2DProperties = new PieChart2DProperties();
+        Set<Map.Entry<String, Integer>> set = statisticsMap.entrySet();
+        Iterator<Entry<String, Integer>> it = set.iterator();
 
-		String[] errorLabel = new String[set.size()];
-		double[] errorData  = new double[set.size()];
-		Paint[]  colorValue = {Color.GREEN,Color.RED,Color.GRAY};
-		double[][] barData  = new double[1][set.size()];
-		int i = 0;
+        String[] errorLabel = new String[set.size()];
+        double[] errorData = new double[set.size()];
+        Paint[] colorValue = {Color.GREEN, Color.RED, Color.GRAY};
+        double[][] barData = new double[1][set.size()];
+        int i = 0;
 
-		while(it.hasNext())
-		{
-			Map.Entry me = (Map.Entry)it.next();
+        while (it.hasNext()) {
+            Map.Entry me = (Map.Entry) it.next();
 
-			errorLabel[i] = (String) me.getKey();
-			errorData[i]  = (Integer) me.getValue();
-			if(errorLabel[i].contains("Passed"))
-				colorValue[i] = Color.GREEN;
-			else if(errorLabel[i].contains("Failed"))
-				colorValue[i] = Color.RED;
-			else
-				colorValue[i] = Color.GRAY;
-			barData[0][i] = (Integer) me.getValue();
-			i++;
-		}
+            errorLabel[i] = (String) me.getKey();
+            errorData[i] = (Integer) me.getValue();
+            if (errorLabel[i].contains("Passed")) {
+                colorValue[i] = Color.GREEN;
+            } else if (errorLabel[i].contains("Failed")) {
+                colorValue[i] = Color.RED;
+            } else {
+                colorValue[i] = Color.GRAY;
+            }
+            barData[0][i] = (Integer) me.getValue();
+            i++;
+        }
 
-		//--- Pie Chart ---//
-		PieChartDataSet pieChartDataSet= new PieChartDataSet( "Errors", errorData, errorLabel, colorValue, pieChart2DProperties );
+        //--- Pie Chart ---//
+        PieChartDataSet pieChartDataSet = new PieChartDataSet("Errors", errorData, errorLabel, colorValue, pieChart2DProperties);
 
-		PieChart2D pieChart2D= new PieChart2D( pieChartDataSet, new LegendProperties(), new ChartProperties(), 500, 350 );
-		exportImage( pieChart2D, "Statistics" );
-	}
-        
+        PieChart2D pieChart2D = new PieChart2D(pieChartDataSet, new LegendProperties(), new ChartProperties(), 500, 350);
+        exportImage(pieChart2D, "Statistics");
+    }
+
     public static File readResource(String suiteName, String fileName) throws IOException, FileNotFoundException {
- 
+
         InputStream inputStream = com.nsn.tsmanalyser.tsmAnalyser.class.getResourceAsStream(suiteName);
         File tmpFile = File.createTempFile(fileName, "txt");
         tmpFile.deleteOnExit();
@@ -196,16 +184,16 @@ public class utils {
         }
         return tmpFile;
     }
-        
+
     public static void applyXslt(File xmlFile, File xsltFile, String fileName) throws TransformerFactoryConfigurationError, TransformerConfigurationException, TransformerException {
         javax.xml.transform.Source xmlSource = new javax.xml.transform.stream.StreamSource(xmlFile);
-        javax.xml.transform.Source xsltSource= new javax.xml.transform.stream.StreamSource(xsltFile);
-        javax.xml.transform.Result result 	 = new javax.xml.transform.stream.StreamResult(new File(fileName));
-        
+        javax.xml.transform.Source xsltSource = new javax.xml.transform.stream.StreamSource(xsltFile);
+        javax.xml.transform.Result result = new javax.xml.transform.stream.StreamResult(new File(fileName));
+
         javax.xml.transform.TransformerFactory transFactory = javax.xml.transform.TransformerFactory.newInstance();
 
         javax.xml.transform.Transformer trans = transFactory.newTransformer(xsltSource);
-        
+
         trans.transform(xmlSource, result);
     }
 }

@@ -13,8 +13,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -30,8 +28,7 @@ public class TSMProcessor implements IXMLProcessor {
         Element root = doc.getDocumentElement();
         NodeList FailedTestCases = root.getElementsByTagName("TestCase");
 
-        ApplicationContext context = new ClassPathXmlApplicationContext("ApplicationContext.xml");
-        IErrorProcessor errorProcessor = (IErrorProcessor) context.getBean("Protocol");
+        IErrorProcessor errorProcessor = ApplicationFactory.getInstance().getErrorProcessor();
 
         for (int i = 0; i < FailedTestCases.getLength(); i++) {
             //--- Print Test Case Name ---//
